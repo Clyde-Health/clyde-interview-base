@@ -1,0 +1,37 @@
+# Render Blueprint: one Postgres database and one Docker web service.
+# Render → New → Blueprint → pick this repo, and it creates both and wires DB_URL between them.
+# Production (clyde-api) runs on Render the same way: Docker web service, health check on /healthz,
+# config through environment variables.
+
+databases:
+  - name: interview-db
+    plan: free
+    databaseName: interview
+    user: interview
+    postgresMajorVersion: '17'
+
+services:
+  - type: web
+    name: clyde-interview-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    # Deploy every push to main once GitHub checks (CI) pass.
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: DB_URL
+        fromDatabase:
+          name: interview-db
+          property: connectionString
+      # The internal connection string stays on Render's private network, which doesn't use SSL.
+      - key: DB_SSL
+        value: 'false'
+      # Secrets for your take-home go here with `sync: false`: Render asks for the value when the
+      # Blueprint is applied and never stores it in the repo.
+      # - key: OPENAI_API_KEY
+      #   sync: false

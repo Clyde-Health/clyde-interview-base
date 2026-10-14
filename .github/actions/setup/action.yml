@@ -1,0 +1,18 @@
+name: Setup Node.js & Yarn
+description: Sets up Node.js from .nvmrc, enables Corepack (Yarn version comes from packageManager), and installs dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+
+    - name: Enable Corepack
+      shell: bash
+      run: corepack enable
+
+    - name: Install dependencies
+      shell: bash
+      run: yarn install --immutable

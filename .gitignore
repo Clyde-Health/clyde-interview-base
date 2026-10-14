@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Yarn 4 (node-modules linker): keep the lockfile, ignore the cache/install state
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*

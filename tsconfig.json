@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    // Keep this list in sync with `_moduleAliases` in package.json. tsc resolves these to src/ at
+    // compile time; module-alias resolves the same names to dist/ at runtime.
+    "paths": {
+      "@clyde-api/config/*": ["src/config/*"],
+      "@clyde-api/models/*": ["src/models/*"],
+      "@clyde-api/server/*": ["src/server/*"],
+      "@clyde-api/types/*": ["src/types/*"],
+      "@clyde-api/utils/*": ["src/utils/*"],
+      "@clyde-api/knexfile": ["knexfile.js"]
+    },
+    // Limit type roots to this package so a parent directory's @types are not auto-included.
+    "typeRoots": ["./node_modules/@types"],
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", ".yarn", "dist"]
+}

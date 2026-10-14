@@ -1,0 +1,17 @@
+// Typecheck-only project that ALSO covers tests/. The base tsconfig.json includes only src/**/*.ts
+// because `yarn build` must emit just src/. `yarn typecheck` uses this project so stale test code is
+// caught by tsc rather than mid-run by ts-jest. Never emits.
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "types": ["node", "jest"],
+    // Catch-all mirroring jest.config.js moduleNameMapper (^@clyde-api/(.*)$ -> <rootDir>/src/$1).
+    "paths": {
+      "@clyde-api/knexfile": ["knexfile.js"],
+      "@clyde-api/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
+}

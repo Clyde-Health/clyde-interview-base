@@ -1,0 +1,37 @@
+services:
+  interview-db:
+    image: postgres:17
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=interview
+      - POSTGRES_PASSWORD=interview
+      - POSTGRES_DB=interview
+    volumes:
+      - interview-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U interview']
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  # Throwaway database for tests that need a real Postgres. Data lives in tmpfs and vanishes on stop.
+  interview-db-test:
+    image: postgres:17
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=interview-test
+      - POSTGRES_PASSWORD=interview-test
+      - POSTGRES_DB=interview_test
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U interview-test']
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+volumes:
+  interview-db-data:
