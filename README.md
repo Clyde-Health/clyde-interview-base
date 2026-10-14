@@ -43,7 +43,7 @@ reference. It does not solve any part of the take-home. Copy its shape for whate
 ```bash
 yarn                       # install dependencies
 cp .env.example .env       # local config (defaults already match docker-compose)
-yarn db:up                 # start Postgres 17 in Docker on :5432
+yarn db:up                 # start Postgres 17 in Docker on :2534
 yarn migrate               # create the tables
 yarn dev                   # compile + run, restarting on every save
 ```
@@ -132,14 +132,14 @@ HTTP request
 | `yarn lint` | ESLint + Prettier. Fix formatting with `yarn prettier --write "src/**/*.ts"` |
 | `yarn migrate` / `yarn migrate:down` | Apply / roll back migrations |
 | `yarn migrate:make <name>` | New migration file |
-| `yarn db:up` / `yarn db:down` | Start / stop local Postgres (`:5432`, plus a throwaway test DB on `:5433`) |
+| `yarn db:up` / `yarn db:down` | Start / stop local Postgres (`:2534`, plus a throwaway test DB on `:5433`) |
 
 ---
 
 ## Deploying (Render)
 
 Production runs on Render, and so does this repo. Everything Render needs is declared in
-`render.yaml` (the "Blueprint"), so there is nothing to configure by hand.
+`render.yaml` (the "Blueprint"), so there should be nothing to configure by hand.
 
 ### First deploy (about 15 minutes, mostly waiting for the build)
 
@@ -186,7 +186,7 @@ Production runs on Render, and so does this repo. Everything Render needs is dec
 ```bash
 docker build -t clyde-interview-api .
 docker run --rm -p 4000:4000 \
-  -e DB_URL=postgres://interview:interview@host.docker.internal:5432/interview \
+  -e DB_URL=postgres://interview:interview@host.docker.internal:2534/interview \
   -e DB_SSL=false \
   clyde-interview-api
 ```
@@ -195,7 +195,7 @@ docker run --rm -p 4000:4000 \
 
 ## Troubleshooting
 
-**`Could not connect to Postgres at localhost:5432. Nothing is listening there.`**
+**`Could not connect to Postgres at localhost:2534. Nothing is listening there.`**
 Postgres isn't running. Start Docker Desktop, then run `yarn db:up`. Check it with `docker compose ps`.
 
 **`port 5432 is already allocated` on `yarn db:up`**
